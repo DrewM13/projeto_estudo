@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header class="bg-blue-grey-6">
       <q-toolbar>
         <q-btn
           flat
@@ -11,11 +11,14 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="text-center q-gutter-x-md">
+          <q-btn class="text-h7" flat dense color="white" no-caps @click="mainPage()" label="Página inicial" />
+          <q-btn class="text-h7" flat dense color="white" no-caps @click="aboutPage()" label="Sobre" />
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+         <div>
+           <q-btn class="text-h7" flat dense color="white" no-caps @click="registerPage()" label="Login/Cadastrar" />
+           </div>
       </q-toolbar>
     </q-header>
 
@@ -104,6 +107,17 @@ export default {
       leftDrawerOpen: false,
       essentialLinks: linksData
     }
+  },
+  methods:{
+    mainPage(){
+      this.$router.push({name:'index'})
+    },
+     registerPage(){
+      this.$router.push({name:'register'})
+    },
+    //  aboutPage(){
+    //   this.$router.push({name:'index'})
+    // }
   }
 }
 </script>

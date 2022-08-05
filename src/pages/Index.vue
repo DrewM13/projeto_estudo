@@ -1,11 +1,15 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-     <q-btn color="white" text-color="black" label="Standard" @click="teste()" />
+  <q-page>
+    <div>
+      <div class="absolute-bottom-right q-pa-md">
+        <q-btn class="q-px-sm" color="primary" no-caps rounded dense label="Ir para página teste" @click="teste()" />
+      </div>
+    </div>
+
+
+
+
+
 
   </q-page>
 </template>
