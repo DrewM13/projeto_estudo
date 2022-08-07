@@ -24,7 +24,6 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
       content-class="bg-grey-1"
     >
@@ -113,7 +112,7 @@ export default {
       this.$router.push({name:'index'})
     },
      registerPage(){
-      this.$router.push({name:'register'})
+      this.$router.push({name:'credentials'})
     },
     //  aboutPage(){
     //   this.$router.push({name:'index'})
