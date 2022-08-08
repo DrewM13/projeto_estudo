@@ -2,12 +2,13 @@
   "name": "projeto-estudo",
   "version": "0.0.1",
   "description": "projeto para estudo",
-  "productName": "Quasar App",
+  "productName": "Projeto para estudo",
   "author": "DrewM13 <andrew.maciel@hotmail.com>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "dev":"yarn quasar dev"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

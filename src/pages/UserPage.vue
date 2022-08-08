@@ -16,16 +16,17 @@
      outlined
      dense
      type="email"
-     v-model="Email"
+     v-model="NewUser.Email"
      label="Digite o seu E-mail"
      reactive-rules
      :rules="[ val => val && val.length > 0 || 'E-mail inválido']"/>
     <q-input
+    reactive-rules
     color="light-blue-10"
      :type="isPwd?'password':'text'"
       outlined
       dense
-      v-model="PassWord"
+      v-model="NewUser.PassWord"
       label="Digite sua senha"
       :rules="[val => val !== null && val !== '' || 'Senha incorreta', val=>val === ConfirmPassWord|| 'Senhas diferentes']">
     <q-btn
@@ -35,13 +36,14 @@
      @click="isPwd = !isPwd" />
      </q-input>
     <q-input
+    reactive-rules
     color="light-blue-10"
      :type="isPwd2?'password':'text'"
       outlined
       dense
       v-model="ConfirmPassWord"
       label="Confirme a sua senha"
-      :rules="[val => val !== null && val !== ''||'Senha incorreta', val=>val === PassWord|| 'Senhas diferentes']" >
+      :rules="[val => val !== null && val !== ''||'Senha incorreta', val=>val === NewUser.PassWord|| 'Senhas diferentes']" >
      <q-btn
       flat
       dense
@@ -57,7 +59,7 @@
   </q-form>
 </div>
     <div v-else>
-    <q-form ref="myFormLogin" @submit="Login()" class=" column" >
+    <q-form ref="myFormLogin" @submit="Login()" class="column" >
    <div class="col-5 q-px-md">
       <span class="text-subtitle2">E-mail</span>
       <q-input
@@ -66,11 +68,10 @@
       outlined
       dense
       hide-bottom-space
-      v-model="Email"
+      v-model="userData.Email"
+      :rules="[ val => val && val.length > 0 || 'E-mail inválido']"
       type="email"
-      label="Digite o seu E-mail*"
-      reactive-rules
-      :rules="[ val => val && val.length > 0 || 'E-mail inválido']" />
+      label="Digite o seu E-mail" />
       </div>
        <div class="col-5 q-pa-md ">
         <span class="text-subtitle2">Senha</span>
@@ -81,15 +82,14 @@
          :type="isPwd?'password':'text'"
          outlined
          dense
-         v-model="PassWord"
-         label="Digite sua senha*"
-         lazy-rules
-        :rules="[val => val !== null && val !== '' || 'Senha incorreta']">
+         v-model="userData.PassWord"
+        :rules="[ val => val && val.length > 0 || 'Senha inválida']"
+         label="Digite sua senha">
         <q-btn flat dense :icon="isPwd ? 'visibility_off' : 'visibility'" @click="isPwd = !isPwd" />
         </q-input>
     </div>
     <div class="text-center q-py-md">
-    <q-btn label="Entrar" type="submit" icon="login" no-caps color="primary"/>
+    <q-btn label="Entrar" type="submit" icon="login" no-caps color="indigo"/>
     </div>
     </q-form>
     </div>
@@ -101,29 +101,59 @@
   </q-page>
 </template>
 <script>
+import axios from "axios"
+  const api = axios.create({
+    baseURL: "http://localhost:3000/"
+  })
 export default {
   name: 'credentials',
   data () {
     return {
-      Email: '',
-      PassWord: '',
       ConfirmPassWord:'',
       accept: false,
       registerer:false,
       isPwd:true,
-      isPwd2:true
+      isPwd2:true,
+      teste:'',
+      userData:{Email:'',PassWord:''},
+      NewUser:{Email:'',PassWord:''}
     }
   },
   methods:{
     Login(){
-      this.$refs.myFormLogin.validate().then(success =>{
-        this.$router.push({name:'index'})
-      })
+       this.$refs.myFormLogin.validate().then(success =>{
+
+        api
+        .post("credentials", this.userData.data)
+         .then((res) => {
+          this.$router.push({name:'index'})
+        })
+        .catch((error) => {
+          console.log(`Erro ao Acessar Login.\n${error}`);
+        });
+        })
     },
      CreateUser(){
       this.$refs.myFormCreateUser.validate().then(success =>{
-       this.registerer = false
+          api
+        .post("credentials/NewUser", this.NewUser.data)
+         .then((res) => {
+          this.registerer = false
+        })
+        .catch((error) => {
+          console.log(`Erro ao Acessar Login.\n${error}`);
+        });
       })
+    },
+    GetData(){
+      api
+      .get("credentials")
+       .then((res) => {
+          this.teste = res.data
+        })
+        .catch((error) => {
+          console.log(`Erro ao acessar o GetApi.\n${error}`);
+        });
     }
   }
 }
