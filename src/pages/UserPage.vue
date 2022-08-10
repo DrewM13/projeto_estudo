@@ -16,7 +16,7 @@
      outlined
      dense
      type="email"
-     v-model="NewUser.Email"
+     v-model="userData.UserMail"
      label="Digite o seu E-mail"
      reactive-rules
      :rules="[ val => val && val.length > 0 || 'E-mail inválido']"/>
@@ -26,7 +26,7 @@
      :type="isPwd?'password':'text'"
       outlined
       dense
-      v-model="NewUser.PassWord"
+      v-model="userData.UserPW"
       label="Digite sua senha"
       :rules="[val => val !== null && val !== '' || 'Senha incorreta', val=>val === ConfirmPassWord|| 'Senhas diferentes']">
     <q-btn
@@ -43,7 +43,7 @@
       dense
       v-model="ConfirmPassWord"
       label="Confirme a sua senha"
-      :rules="[val => val !== null && val !== ''||'Senha incorreta', val=>val === NewUser.PassWord|| 'Senhas diferentes']" >
+      :rules="[val => val !== null && val !== ''||'Senha incorreta', val=>val === userData.UserPW|| 'Senhas diferentes']" >
      <q-btn
       flat
       dense
@@ -68,7 +68,7 @@
       outlined
       dense
       hide-bottom-space
-      v-model="userData.Email"
+      v-model="userData.UserMail"
       :rules="[ val => val && val.length > 0 || 'E-mail inválido']"
       type="email"
       label="Digite o seu E-mail" />
@@ -82,7 +82,7 @@
          :type="isPwd?'password':'text'"
          outlined
          dense
-         v-model="userData.PassWord"
+         v-model="userData.UserPW"
         :rules="[ val => val && val.length > 0 || 'Senha inválida']"
          label="Digite sua senha">
         <q-btn flat dense :icon="isPwd ? 'visibility_off' : 'visibility'" @click="isPwd = !isPwd" />
@@ -115,8 +115,7 @@ export default {
       isPwd:true,
       isPwd2:true,
       teste:'',
-      userData:{Email:'',PassWord:''},
-      NewUser:{Email:'',PassWord:''}
+      userData:{UserMail:'',UserPW:''},
     }
   },
   methods:{
@@ -124,24 +123,25 @@ export default {
        this.$refs.myFormLogin.validate().then(success =>{
 
         api
-        .post("credentials", this.userData.data)
+        .post("credentials/login", this.userData)
          .then((res) => {
           this.$router.push({name:'index'})
         })
         .catch((error) => {
-          console.log(`Erro ao Acessar Login.\n${error}`);
+          alert(`${error.response.data.mensagem}`);
         });
         })
     },
      CreateUser(){
       this.$refs.myFormCreateUser.validate().then(success =>{
-          api
-        .post("credentials/NewUser", this.NewUser.data)
+        api
+        .post("credentials/NewUser", this.userData)
          .then((res) => {
+          this.teste=res
           this.registerer = false
         })
         .catch((error) => {
-          console.log(`Erro ao Acessar Login.\n${error}`);
+          alert(`Erro ao criar Login.\n${error.response.data.mensagem}`);
         });
       })
     },
