@@ -12,13 +12,9 @@
         />
 
         <q-toolbar-title class="text-center q-gutter-x-md">
-          <q-btn class="text-h7" flat dense color="white" no-caps @click="mainPage()" label="Página inicial" />
-          <q-btn class="text-h7" flat dense color="white" no-caps @click="aboutPage()" label="Sobre" />
+          <q-btn class="text-h7" flat dense color="white" no-caps @click="loginPage()" label="Página inicial" />
+          <q-btn class="text-h7" flat dense color="white" no-caps @click="listClientsPage()" label="Clientes" />
         </q-toolbar-title>
-
-         <div>
-           <q-btn class="text-h7" flat dense color="white" no-caps @click="registerPage()" label="Login/Cadastrar" />
-           </div>
       </q-toolbar>
     </q-header>
 
@@ -108,15 +104,12 @@ export default {
     }
   },
   methods:{
-    mainPage(){
-      this.$router.push({name:'index'})
+    listClientsPage(){
+      this.$router.push({name:'list'})
     },
-     registerPage(){
+     loginPage(){
       this.$router.push({name:'credentials'})
-    },
-    //  aboutPage(){
-    //   this.$router.push({name:'index'})
-    // }
+    }
   }
 }
 </script>
