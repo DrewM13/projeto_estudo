@@ -7,7 +7,7 @@
       row-key="name"
     >
     <template v-slot:top-right>
-       <q-btn color="green-9" rounded dense class="q-px-sm" label="Adicionar" no-caps @click="addPage()"/>
+       <q-btn color="green-9" rounded outline dense class="q-px-sm" icon="add " label="Adicionar" no-caps @click="addPage()"/>
 
       </template>
       <template v-slot:top-left>
@@ -112,6 +112,12 @@ export default {
   mounted(){
     this.getData()
   },
+  watch:{
+    getData(){
+      this.getData()
+    }
+  },
+
   methods:{
     getData(){
      api.get("clients")

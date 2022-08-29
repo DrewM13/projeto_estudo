@@ -64,7 +64,7 @@
    <q-item-section>
     <div class="row items-center">
    <span class="text-weight-medium col-5">Email:</span>
-   <span class="col-auto">{{data.Email? data.Email:'-'}}</span>
+   <span class="col-auto">{{data.Email}}</span>
   </div>
    </q-item-section>
    </q-item>
@@ -93,25 +93,6 @@ const api = axios.create({
 export default {
   data () {
     return {
-      text:'',
-      columns: [
-        {
-          name: 'Nome',
-          label: 'Nome',
-          align: 'left',
-          field: 'Nome',
-          sortable: true
-        },
-        { name: 'Email',
-         align: 'center',
-         label: 'Email',
-          field: 'Email',
-           sortable: true },
-        { name: 'Actions',
-        label: 'Ações',
-        field: 'Actions' ,
-        align: 'center' }
-      ],
       data:[]
     }
   },

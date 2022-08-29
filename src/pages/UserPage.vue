@@ -112,7 +112,7 @@
               type="submit"
               icon="far fa-user"
               no-caps
-              color="indigo"
+              color="primary"
             />
           </div>
         </q-form>
@@ -122,6 +122,7 @@
           >Já possui conta?</span
         >
         <q-btn
+        :icon="registerer ?'far fa-user':'person_add'"
           class="col-auto"
           color="primary"
           :label="registerer ? 'Ir para Login' : 'Criar Conta'"

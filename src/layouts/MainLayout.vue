@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-blue-grey-6">
+    <q-header class="tertiary">
       <q-toolbar>
         <q-btn
           flat
@@ -10,11 +10,6 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-
-        <q-toolbar-title class="text-center q-gutter-x-md">
-          <q-btn class="text-h7" flat dense color="white" no-caps @click="loginPage()" label="Página inicial" />
-          <q-btn class="text-h7" flat dense color="white" no-caps @click="listClientsPage()" label="Clientes" />
-        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -23,18 +18,22 @@
       bordered
       content-class="bg-grey-1"
     >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+      <q-list  dense bordered flat separator class=" rounded-borders">
+
+        <q-item clickable>
+          <q-item-section>
+            <q-btn class="text-h7" flat dense rounded color="primary" no-caps @click="loginPage()" icon="person" label="Página inicial" />
+          </q-item-section>
+
+        </q-item>
+ <q-item clickable>
+          <q-item-section >
+            <q-btn class="text-h7" flat rounded dense color="primary" icon="list_alt" no-caps @click="listClientsPage()" label="Clientes" />
+
+          </q-item-section>
+
+        </q-item>
+
       </q-list>
     </q-drawer>
 
@@ -45,7 +44,6 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
   {
@@ -94,9 +92,7 @@ const linksData = [
 
 export default {
   name: 'MainLayout',
-  components: {
-    EssentialLink
-  },
+
   data () {
     return {
       leftDrawerOpen: false,
