@@ -5,6 +5,7 @@
 
       <q-card-section class="q-pt-sm q-pb-none q-px-md row">
         <span class="text-h6 text-blue-grey-9 col">{{this.$route.params.id ? 'Editar':'Adicionar'}} cliente</span>
+        {{data}}
         <div class="text-blue-grey-9 col text-right">
           <div class="row q-gutter-x-sm">
             <div class="col">
@@ -30,9 +31,9 @@
    <q-item >
    <q-item-section class="q-pa-sm">
     <div class="row items-center">
-      <span class="text-weight-medium col">Nome: </span>
+      <span class="text-weight-medium col">Nome do Usuário: </span>
       <span class="col">
-  <q-input dense rounded outlined lazy-rules hide-bottom-space :rules="[val=>val.length>0||'Valor inválido']" v-model="data.Nome" label="Digite o nome completo do cliente" />
+  <q-input dense rounded outlined lazy-rules hide-bottom-space :rules="[val=>val.length>0||'Valor inválido']" v-model="data.Usuario" label="Digite o nome do usuário" />
 </span>
     </div>
    </q-item-section >
@@ -50,9 +51,9 @@
    <q-item >
    <q-item-section class="q-pa-sm">
     <div class="row items-center">
-      <span class="text-weight-medium col">Telefone: </span>
+      <span class="text-weight-medium col">Senha: </span>
       <span class="col">
-      <q-input dense rounded outlined mask="####-####" v-model="data.Telefone" label="Digite o telefone do cliente" />
+      <q-input dense rounded outlined v-model="data.Senha" label="Digite a senha do usuário" />
     </span>
   </div>
    </q-item-section>
@@ -60,9 +61,10 @@
    <q-item >
    <q-item-section class="q-pa-sm">
     <div class="row items-center">
-      <span class="text-weight-medium col">Celular: </span>
+      <span class="text-weight-medium col">permissão para editar ou Adicionar: </span>
       <span class="col">
-      <q-input dense rounded outlined mask="+## (##) #####-####" hide-bottom-space lazy-rules :rules="[val=>val.length>0||'Valor inválido']" v-model="data.Celular" label="Digite o celular do cliente" />
+     <q-checkbox left-label v-model="data.EditarCriar"  :label="data.EditarCriar?'Sim':'Não'"/>
+
     </span>
   </div>
    </q-item-section>
@@ -70,9 +72,19 @@
    <q-item >
    <q-item-section class="q-pa-sm">
     <div class="row items-center">
-      <span class="text-weight-medium col">CPF: </span>
+      <span class="text-weight-medium col">permissão para excluir: </span>
       <span class="col">
-      <q-input dense rounded outlined mask="###.###.###-##" lazy-rules hide-bottom-space :rules="[val=>val.length>0||'Valor inválido']" v-model="data.CPF" label="Digite o CPF do cliente" />
+      <q-checkbox left-label v-model="data.Excluir" :label="data.Excluir?'Sim':'Não'" />
+    </span>
+  </div>
+   </q-item-section>
+   </q-item>
+   <q-item >
+   <q-item-section class="q-pa-sm">
+    <div class="row items-center">
+      <span class="text-weight-medium col">permissão de administrador: </span>
+      <span class="col">
+      <q-checkbox left-label v-model="data.Adm" :label="data.Adm?'Sim':'Não'" />
     </span>
   </div>
    </q-item-section>
@@ -93,7 +105,7 @@
             left
             size="25px"
             :name="this.$route.params.id?'edit':'check'"
-            />{{this.$route.params.id? 'Editar cliente':'Criar cliente'}}</q-btn>
+            />{{this.$route.params.id? 'Editar usuário':'Criar usuário'}}</q-btn>
         </div>
     </q-item-section>
    </q-item>
@@ -114,7 +126,8 @@ const api = axios.create({
 export default {
   data () {
     return {
-      data:{Nome:'',Telefone:'',Email:'',Celular:'',CPF:''},
+      data:{  "Usuario": "", "Senha": "", "EditarCriar": null, "Excluir": null, "Adm": null, "Email": "" }
+,
     }
   },
   mounted(){
@@ -124,7 +137,7 @@ export default {
   },
   methods:{
     getData(){
-     api.get(`clients/${this.$route.params.id}`)
+     api.get(`adm/${this.$route.params.id}`)
      .then((res)=>{
        this.data=res.data.data[0]
       })
@@ -133,7 +146,7 @@ export default {
       });
     },
     goBack(){
-      this.$router.push({name:'clientList'})
+      this.$router.push({name:'administrator'})
     },
     validate(){
       this.$refs.myForms.validate().then((res)=>{
@@ -142,20 +155,20 @@ export default {
 
     },
     sendData(){
-      api.post('clients/AddClient/',this.data)
+      api.post('adm/AddUser/',this.data)
       .then((res)=>{
-        alert('Cliente criado com sucesso!');
-        this.$router.push({name:'clientList'})
+        alert('Usuário criado com sucesso!');
+        this.$router.push({name:'administrator'})
       })
       .catch((error) => {
         alert(`${error}`);
       });
     },
      editData(){
-      api.patch(`clients/${this.$route.params.id}/`,this.data)
+      api.patch(`adm/${this.$route.params.id}/`,this.data)
       .then((res)=>{
-        alert('Cliente editado com sucesso!');
-        this.$router.push({name:'clientList'})
+        alert('Usuário editado com sucesso!');
+        this.$router.push({name:'administrator'})
       })
       .catch((error) => {
         alert(`${error}`);

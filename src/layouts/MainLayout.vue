@@ -5,8 +5,8 @@
         <q-btn
           flat
           dense
-          round
-          icon="menu"
+          rounded
+          :icon="leftDrawerOpen?'menu_open':'menu'"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
@@ -22,13 +22,20 @@
 
         <q-item clickable>
           <q-item-section>
-            <q-btn class="text-h7" flat dense rounded color="primary" no-caps @click="loginPage()" icon="person" label="Página inicial" />
+            <q-btn class="text-h7" flat dense rounded color="primary" no-caps @click="loginPage()" icon="dashboard" label="Dashboard" />
+          </q-item-section>
+        </q-item>
+        <q-item clickable>
+          <q-item-section >
+            <q-btn class="text-h7" flat rounded dense color="primary" icon="manage_accounts" no-caps @click="administratorPage()" label="administrador" />
+
           </q-item-section>
 
         </q-item>
- <q-item clickable>
+
+      <q-item clickable>
           <q-item-section >
-            <q-btn class="text-h7" flat rounded dense color="primary" icon="list_alt" no-caps @click="listClientsPage()" label="Clientes" />
+            <q-btn class="text-h7" flat rounded dense color="primary" icon="list_alt" no-caps @click="ClientsPage()" label="Clientes" />
 
           </q-item-section>
 
@@ -44,67 +51,27 @@
 </template>
 
 <script>
-
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
 export default {
   name: 'MainLayout',
 
   data () {
     return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
+      leftDrawerOpen: false
     }
   },
   methods:{
-    listClientsPage(){
-      this.$router.push({name:'list'})
+    ClientsPage(){
+
+      if (true) {
+console.log(1);
+        this.$router.push({name:'clientList'})
+      }
     },
      loginPage(){
       this.$router.push({name:'credentials'})
+    },
+    administratorPage(){
+      this.$router.push({name:'administrator'})
     }
   }
 }

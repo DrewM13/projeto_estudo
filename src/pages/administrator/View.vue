@@ -4,7 +4,7 @@
     <q-card class="q-pa-none bg-grey-2 window-height">
 
       <q-card-section class="q-pt-sm q-pb-none q-px-sm row">
-        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do cliente: {{data.Nome}}</span>
+        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do usuário: {{data.Usuario}}</span>
         <div class="text-blue-grey-9 col text-right">
           <div class="row q-gutter-x-sm">
             <div class="col">
@@ -44,36 +44,50 @@
       </q-card-section>
       <q-card-section class="q-pa-sm " >
         <q-list dense bordered flat separator class="bg-grey-2 text-blue-grey-9 rounded-borders">
-   <q-item >
-   <q-item-section>
-    <div class="row items-center">
-  <span class="text-weight-medium col-5">Telefone:</span>
-  <span class="col-auto">{{data.Telefone? data.Telefone :'-'}} </span>
-    </div>
-   </q-item-section>
-   </q-item>
-   <q-item >
-   <q-item-section>
-    <div class="row items-center">
-   <span class="text-weight-medium col-5">Celular:</span>
-   <span class="col-auto">{{data.Celular}}</span>
-  </div>
-   </q-item-section>
-   </q-item>
+
+
    <q-item >
    <q-item-section>
     <div class="row items-center">
    <span class="text-weight-medium col-5">Email:</span>
    <span class="col-auto">{{data.Email}}</span>
   </div>
+   <div class="row items-center">
+   <span class="text-weight-medium col-5">Senha:</span>
+   <span class="col-auto"><q-input v-model="data.Senha" readonly dense borderless :type="isPWD?'text':'password'" />
+   </span>
+   <span class="col-auto"><q-btn color="primary" dense flat round :icon="isPWD?'visibility':'visibility_off'" @click="isPWD=!isPWD" /></span>
+
+  </div>
    </q-item-section>
    </q-item>
    <q-item >
    <q-item-section>
+
+   <q-expansion-item  dense-toggle dense icon="manage_accounts" label="Permissões:">
+   <q-card>
+   <q-card-section>
     <div class="row items-center">
-   <span class="text-weight-medium col-5" >CPF:</span>
-   <span class="col-auto">{{data.CPF}}</span>
-  </div>
+    <span class="text-weight-medium col-5">Editar/Adicionar clientes</span>
+  <span class="col-auto">{{data.EditarCriar===1?'Sim':'Não'}}</span>
+</div>
+   </q-card-section>
+   <q-card-section>
+    <div class="row items-center">
+    <span class="text-weight-medium col-5">Excluir clientes</span>
+  <span class="col-auto">{{data.Excluir===1?'Sim':'Não'}}</span>
+</div>
+   </q-card-section>
+   <q-card-section>
+    <div class="row items-center">
+    <span class="text-weight-medium col-5">Administrador</span>
+  <span class="col-auto">{{data.Adm===1?'Sim':'Não'}}</span>
+</div>
+   </q-card-section>
+   </q-card>
+   </q-expansion-item>
+
+
    </q-item-section>
    </q-item>
    </q-list>
@@ -93,7 +107,8 @@ const api = axios.create({
 export default {
   data () {
     return {
-      data:[]
+      data:[],
+      isPWD:false
     }
   },
   mounted(){
@@ -101,7 +116,7 @@ export default {
   },
   methods:{
     getData(){
-     api.get(`clients/${this.$route.params.id}`)
+     api.get(`adm/${this.$route.params.id}`)
      .then((res)=>{
        this.data=res.data.data[0]
       })
@@ -110,10 +125,10 @@ export default {
       });
     },
     goBack(){
-      this.$router.push({name:'clientList'})
+      this.$router.push({name:'administrator'})
     },
      editPage(){
-      this.$router.push({name:'editClient',params:{id:this.$route.params.id}})
+      this.$router.push({name:'editAdministrator',params:{id:this.$route.params.id}})
     },
   }
 }

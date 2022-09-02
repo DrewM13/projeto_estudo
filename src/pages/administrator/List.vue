@@ -4,7 +4,7 @@
     <q-table
       :data="data"
       :columns="columns"
-      row-key="idClient"
+      row-key="idAdm"
       selection="multiple"
       :selected.sync="selected"
       :filter="filter"
@@ -28,7 +28,9 @@
       </template>
       <template v-slot:top-left>
 
-          <span class="text-h6 text-blue-grey-7"><q-icon name="fas fa-list" /> Lista de Clientes</span>
+          <span class="text-h6 text-blue-grey-7"><q-icon name="fas fa-list" /> Lista de Usuários</span>
+
+
 
 
 
@@ -45,7 +47,7 @@
             flat
             dense
             size="10px"
-            @click="viewPage(props.row.idClient)"
+            @click="viewPage(props.row.idAdm)"
           >
             <q-tooltip
               content-class="bg-blue-grey-8 text-sm"
@@ -62,7 +64,7 @@
                round
                size="10px"
                dense
-               @click="editPage(props.row.idClient)"
+               @click="editPage(props.row.idAdm)"
                >
                <q-tooltip
               content-class="bg-blue-grey-8 text-sm"
@@ -107,10 +109,10 @@ export default {
       selected:[],
       columns: [
         {
-          name: 'Nome',
-          label: 'Nome',
+          name: 'Usuario',
+          label: 'Usuário',
           align: 'center',
-          field: 'Nome',
+          field: 'Usuario',
           sortable: true
         },
         { name: 'Email',
@@ -137,7 +139,7 @@ export default {
 
   methods:{
     getData(){
-     api.get("clients")
+     api.get("adm")
      .then((res)=>{
        this.data=res.data.data
       })
@@ -146,13 +148,13 @@ export default {
       });
     },
     viewPage(id){
-      this.$router.push({name:'viewClient',params:{id: id}})
+      this.$router.push({name:'viewAdministrator',params:{id: id}})
     },
      editPage(id){
-      this.$router.push({name:'editClient',params:{id: id}})
+      this.$router.push({name:'editAdministrator',params:{id: id}})
     },
      addPage(){
-      this.$router.push({name:'addClient'})
+      this.$router.push({name:'addAdministrator'})
     },
     deleteRow(value){
       this.$q
@@ -179,9 +181,9 @@ export default {
           persistent: true
         })
         .onOk(() => {
-          api.delete(`clients/${value.idClient}`)
+          api.delete(`adm/${value.idAdm}`)
       .then((res)=>{
-        alert(`Cliente ${value.Nome} deletado com sucesso`)
+        alert(`Usuário ${value.Usuario} deletado com sucesso`)
         this.getData()
       })
       .catch((error)=>

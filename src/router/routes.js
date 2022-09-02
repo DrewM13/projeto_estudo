@@ -12,23 +12,50 @@ const routes = [
         children:[
           {
             path: '/',
-            name: 'list',
+            name: 'clientList',
             component: () => import('src/pages/Clients/List')
           },
           {
             path: 'add',
-            name: 'add',
+            name: 'addClient',
             component: () => import('src/pages/Clients/Add')
           },
           {
             path: ':id/edit',
-            name: 'edit',
+            name: 'editClient',
             component: () => import('src/pages/Clients/Add')
           },
           {
             path: ':id/view',
-            name: 'view',
+            name: 'viewClient',
             component: () => import('src/pages/Clients/View')
+          },
+        ]
+      },
+      {
+        path:'administrator',
+        name:'administrator',
+        component: () => import('src/pages/administrator/Index'),
+        children:[
+          {
+            path: '/',
+            name: 'administrator',
+            component: () => import('src/pages/administrator/List')
+          },
+          {
+            path: 'add',
+            name: 'addAdministrator',
+            component: () => import('src/pages/administrator/Add')
+          },
+          {
+            path: ':id/edit',
+            name: 'editAdministrator',
+            component: () => import('src/pages/administrator/Add')
+          },
+          {
+            path: ':id/view',
+            name: 'viewAdministrator',
+            component: () => import('src/pages/administrator/View')
           },
         ]
       }
