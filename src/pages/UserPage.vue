@@ -157,7 +157,7 @@ export default {
         api
           .post("credentials/login", this.userData)
           .then((res) => {
-            this.$router.push({ name: "index" });
+            this.$router.push({ name: "clientList" });
           })
           .catch((error) => {
             alert(`${error.response.data.mensagem}`);
@@ -177,16 +177,16 @@ export default {
           });
       });
     },
-    GetData() {
-      api
-        .get("credentials")
-        .then((res) => {
-          this.teste = res.data;
-        })
-        .catch((error) => {
-          console.log(`Erro ao acessar o GetApi.\n${error}`);
-        });
-    }
+    // GetData() {
+    //   api
+    //     .get("credentials")
+    //     .then((res) => {
+    //       this.teste = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.log(`Erro ao acessar o GetApi.\n${error}`);
+    //     });
+    // }
   }
 };
 </script>

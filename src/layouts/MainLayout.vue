@@ -61,11 +61,7 @@ export default {
   },
   methods:{
     ClientsPage(){
-
-      if (true) {
-console.log(1);
         this.$router.push({name:'clientList'})
-      }
     },
      loginPage(){
       this.$router.push({name:'credentials'})
