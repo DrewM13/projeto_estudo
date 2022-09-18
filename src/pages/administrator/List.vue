@@ -1,6 +1,8 @@
 <template>
 
   <div class="q-pa-sm bg-grey-3 window-height">
+{{data}}
+
     <q-table
       :data="data"
       :columns="columns"
@@ -47,7 +49,7 @@
             flat
             dense
             size="10px"
-            @click="viewPage(props.row.idAdm)"
+            @click="viewPage(props.row.idUsers)"
           >
             <q-tooltip
               content-class="bg-blue-grey-8 text-sm"
@@ -64,7 +66,7 @@
                round
                size="10px"
                dense
-               @click="editPage(props.row.idAdm)"
+               @click="editPage(props.row.idUsers)"
                >
                <q-tooltip
               content-class="bg-blue-grey-8 text-sm"
@@ -98,27 +100,29 @@
 </template>
 
 <script>
+  import notify from "src/Mixins/notify";
   import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/"
 });
 export default {
+  mixins:[notify],
   data () {
     return {
       filter:'',
       selected:[],
       columns: [
         {
-          name: 'Usuario',
+          name: 'username',
           label: 'Usuário',
           align: 'center',
-          field: 'Usuario',
+          field: 'username',
           sortable: true
         },
-        { name: 'Email',
+        { name: 'email',
          align: 'center',
          label: 'Email',
-          field: 'Email',
+          field: 'email',
            sortable: true },
         { name: 'Actions',
         label: 'Ações',
@@ -131,20 +135,26 @@ export default {
   mounted(){
     this.getData()
   },
-  watch:{
-    getData(){
-      this.getData()
-    }
-  },
+  // watch:{
+  //   getData(){
+  //     this.getData()
+  //   }
+  // },
 
   methods:{
     getData(){
-     api.get("adm")
+     api.get("adm",{  headers: {
+      "Access-Control-Allow-Origin": "*",
+       'Content-Type': 'application/x-www-form-urlencoded',
+       'x-www-form-urlencoded':{token:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXJzIjozLCJlbWFpbCI6ImFAYS5jb20iLCJpYXQiOjE2NjM1MDA4MDMsImV4cCI6MTY2MzUwNDQwM30.RzThEwaJGsw5BCxVye6P3nffBqLD1LvaKmZWVd6B83g'
+  }}
+})
      .then((res)=>{
-       this.data=res.data.data
+      console.log(res);
+       this.data=res.data
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     },
     viewPage(id){
@@ -160,7 +170,7 @@ export default {
       this.$q
         .dialog({
           title: 'Atenção!',
-          message: 'Você realmente deseja excluir este cliente?',
+          message: 'Você realmente deseja excluir este morador??',
           focus: 'cancel',
           cancel: {
             label: 'Não',
@@ -181,13 +191,13 @@ export default {
           persistent: true
         })
         .onOk(() => {
-          api.delete(`adm/${value.idAdm}`)
+          api.delete(`adm/${value.idUsers}`)
       .then((res)=>{
-        alert(`Usuário ${value.Usuario} deletado com sucesso`)
+        this.successNotify(`Morador ${value.username} deletado com sucesso`)
         this.getData()
       })
       .catch((error)=>
-        alert(`${error}`)
+      this.errorNotify(`${error}`)
       )
         })
     }

@@ -107,11 +107,13 @@
 </template>
 
 <script>
+  import notify from "src/Mixins/notify";
   import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/"
 });
 export default {
+  mixins:[notify],
   data () {
     return {
       data:{Nome:'',Telefone:'',Email:'',Celular:'',CPF:''},
@@ -129,7 +131,7 @@ export default {
        this.data=res.data.data[0]
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     },
     goBack(){
@@ -144,7 +146,7 @@ export default {
     sendData(){
       api.post('clients/AddClient/',this.data)
       .then((res)=>{
-        alert('Cliente criado com sucesso!');
+        this.successNotify('Cliente criado com sucesso!');
         this.$router.push({name:'clientList'})
       })
       .catch((error) => {
@@ -154,11 +156,11 @@ export default {
      editData(){
       api.patch(`clients/${this.$route.params.id}/`,this.data)
       .then((res)=>{
-        alert('Cliente editado com sucesso!');
+        this.successNotify('Cliente editado com sucesso!');
         this.$router.push({name:'clientList'})
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     }
   }

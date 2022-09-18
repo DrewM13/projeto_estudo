@@ -4,7 +4,7 @@
     <q-card class="q-pa-none bg-grey-2 window-height">
 
       <q-card-section class="q-pt-sm q-pb-none q-px-md row">
-        <span class="text-h6 text-blue-grey-9 col">{{this.$route.params.id ? 'Editar':'Adicionar'}} cliente</span>
+        <span class="text-h6 text-blue-grey-9 col">{{this.$route.params.id ? 'Editar':'Adicionar'}} morador</span>
         {{data}}
         <div class="text-blue-grey-9 col text-right">
           <div class="row q-gutter-x-sm">
@@ -31,9 +31,9 @@
    <q-item >
    <q-item-section class="q-pa-sm">
     <div class="row items-center">
-      <span class="text-weight-medium col">Nome do Usuário: </span>
+      <span class="text-weight-medium col">Nome do morador: </span>
       <span class="col">
-  <q-input dense rounded outlined lazy-rules hide-bottom-space :rules="[val=>val.length>0||'Valor inválido']" v-model="data.Usuario" label="Digite o nome do usuário" />
+  <q-input dense rounded outlined lazy-rules hide-bottom-space :rules="[val=>val.length>0||'Valor inválido']" v-model="data.username" label="Digite o nome do morador" />
 </span>
     </div>
    </q-item-section >
@@ -43,7 +43,7 @@
     <div class="row items-center">
       <span class="text-weight-medium col">Email: </span>
       <span class="col">
-      <q-input dense rounded outlined hide-bottom-space v-model="data.Email" lazy-rules :rules="[val=>val.length>0||'Valor inválido']" type="email" label="Digite o email do cliente" />
+      <q-input dense rounded outlined hide-bottom-space v-model="data.email" lazy-rules :rules="[val=>val.length>0||'Valor inválido']" type="email" label="Digite o email do morador" />
     </span>
     </div>
    </q-item-section>
@@ -53,33 +53,12 @@
     <div class="row items-center">
       <span class="text-weight-medium col">Senha: </span>
       <span class="col">
-      <q-input dense rounded outlined v-model="data.Senha" label="Digite a senha do usuário" />
+      <q-input dense rounded outlined v-model="data.password" label="Digite a senha do morador" />
     </span>
   </div>
    </q-item-section>
    </q-item>
-   <q-item >
-   <q-item-section class="q-pa-sm">
-    <div class="row items-center">
-      <span class="text-weight-medium col">permissão para editar ou Adicionar: </span>
-      <span class="col">
-     <q-checkbox left-label v-model="data.EditarCriar"  :label="data.EditarCriar?'Sim':'Não'"/>
-
-    </span>
-  </div>
-   </q-item-section>
-   </q-item>
-   <q-item >
-   <q-item-section class="q-pa-sm">
-    <div class="row items-center">
-      <span class="text-weight-medium col">permissão para excluir: </span>
-      <span class="col">
-      <q-checkbox left-label v-model="data.Excluir" :label="data.Excluir?'Sim':'Não'" />
-    </span>
-  </div>
-   </q-item-section>
-   </q-item>
-   <q-item >
+   <q-item>
    <q-item-section class="q-pa-sm">
     <div class="row items-center">
       <span class="text-weight-medium col">permissão de administrador: </span>
@@ -105,7 +84,7 @@
             left
             size="25px"
             :name="this.$route.params.id?'edit':'check'"
-            />{{this.$route.params.id? 'Editar usuário':'Criar usuário'}}</q-btn>
+            />{{this.$route.params.id? 'Editar morador':'Criar morador'}}</q-btn>
         </div>
     </q-item-section>
    </q-item>
@@ -119,14 +98,16 @@
 </template>
 
 <script>
+  import notify from "src/Mixins/notify";
   import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/"
 });
 export default {
+  mixins:[notify],
   data () {
     return {
-      data:{  "Usuario": "", "Senha": "", "EditarCriar": null, "Excluir": null, "Adm": null, "Email": "" }
+      data:{  "username": "", "password": "", "Adm": null, "email": "" }
 ,
     }
   },
@@ -142,7 +123,7 @@ export default {
        this.data=res.data.data[0]
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     },
     goBack(){
@@ -157,21 +138,21 @@ export default {
     sendData(){
       api.post('adm/AddUser/',this.data)
       .then((res)=>{
-        alert('Usuário criado com sucesso!');
+        this.successNotify('Morador criado com sucesso!');
         this.$router.push({name:'administrator'})
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     },
      editData(){
       api.patch(`adm/${this.$route.params.id}/`,this.data)
       .then((res)=>{
-        alert('Usuário editado com sucesso!');
+        this.successNotify('Morador editado com sucesso!');
         this.$router.push({name:'administrator'})
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     }
   }

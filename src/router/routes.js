@@ -2,11 +2,34 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '',name:'credentials', component: () => import('src/pages/UserPage.vue') },
+    component: () => import('layouts/LoginLayout.vue'),
+    children:[
       {
-        path:'clientList',
+      path:'',
+      component: () => import('src/pages/Login/Index.vue'),
+      children:[{
+         path: '',
+         name:'credentials',
+          component: () => import('src/pages/Login/UserPage.vue') }]
+    }
+]
+  },
+  {
+    path: '/',
+      component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {path:'',
+       component: () => import('src/pages/DashBoard/Index'),
+       children:[
+        {
+        path:'',
+        name:'DashBoard',
+         component: () => import('src/pages/DashBoard/DashBoard')
+        }
+       ]
+      },
+      {
+        path:'/resident',
         name:'clientList',
         component: () => import('src/pages/Clients/Index'),
         children:[

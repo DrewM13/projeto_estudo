@@ -4,7 +4,7 @@
     <q-card class="q-pa-none bg-grey-2 window-height">
 
       <q-card-section class="q-pt-sm q-pb-none q-px-sm row">
-        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do cliente: {{data.Nome}}</span>
+        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do morador: {{data.username}}</span>
         <div class="text-blue-grey-9 col text-right">
           <div class="row q-gutter-x-sm">
             <div class="col">
@@ -86,11 +86,13 @@
 </template>
 
 <script>
+  import notify from "src/Mixins/notify";
   import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/"
 });
 export default {
+  notify:[notify],
   data () {
     return {
       data:[]
@@ -106,7 +108,7 @@ export default {
        this.data=res.data.data[0]
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     },
     goBack(){

@@ -22,7 +22,7 @@
 
         <q-item clickable>
           <q-item-section>
-            <q-btn class="text-h7" flat dense rounded color="primary" no-caps @click="loginPage()" icon="dashboard" label="Dashboard" />
+            <q-btn class="text-h7" flat dense rounded color="primary" no-caps @click="DashBoardPage()" icon="dashboard" label="Dashboard" />
           </q-item-section>
         </q-item>
         <q-item clickable>
@@ -35,7 +35,7 @@
 
       <q-item clickable>
           <q-item-section >
-            <q-btn class="text-h7" flat rounded dense color="primary" icon="list_alt" no-caps @click="ClientsPage()" label="Clientes" />
+            <q-btn class="text-h7" flat rounded dense color="primary" icon="list_alt" no-caps @click="ResidentPage()" label="Morador" />
 
           </q-item-section>
 
@@ -60,11 +60,11 @@ export default {
     }
   },
   methods:{
-    ClientsPage(){
+    ResidentPage(){
         this.$router.push({name:'clientList'})
     },
-     loginPage(){
-      this.$router.push({name:'credentials'})
+    DashBoardPage(){
+      this.$router.push({name:'DashBoard'})
     },
     administratorPage(){
       this.$router.push({name:'administrator'})

@@ -96,11 +96,13 @@
 </template>
 
 <script>
+  import notify from "src/Mixins/notify";
   import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/"
 });
 export default {
+  mixins:[notify],
   data () {
     return {
       filter:'',
@@ -137,12 +139,12 @@ export default {
 
   methods:{
     getData(){
-     api.get("clients")
+     api.get("resident")
      .then((res)=>{
        this.data=res.data.data
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(error);
       });
     },
     viewPage(id){
@@ -158,7 +160,7 @@ export default {
       this.$q
         .dialog({
           title: 'Atenção!',
-          message: 'Você realmente deseja excluir este cliente?',
+          message: 'Você realmente deseja excluir este residente?',
           focus: 'cancel',
           cancel: {
             label: 'Não',
@@ -179,13 +181,13 @@ export default {
           persistent: true
         })
         .onOk(() => {
-          api.delete(`clients/${value.idClient}`)
+          api.delete(`resident/${value.idResident}`)
       .then((res)=>{
-        alert(`Cliente ${value.Nome} deletado com sucesso`)
+        this.successNotify(`Residente ${value.name} deletado com sucesso`)
         this.getData()
       })
       .catch((error)=>
-        alert(`${error}`)
+        this.errorNotify(error)
       )
         })
     }

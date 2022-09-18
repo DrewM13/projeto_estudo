@@ -4,7 +4,7 @@
     <q-card class="q-pa-none bg-grey-2 window-height">
 
       <q-card-section class="q-pt-sm q-pb-none q-px-sm row">
-        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do usuário: {{data.Usuario}}</span>
+        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do morador: {{data.morador}}</span>
         <div class="text-blue-grey-9 col text-right">
           <div class="row q-gutter-x-sm">
             <div class="col">
@@ -50,11 +50,11 @@
    <q-item-section>
     <div class="row items-center">
    <span class="text-weight-medium col-5">Email:</span>
-   <span class="col-auto">{{data.Email}}</span>
+   <span class="col-auto">{{data.email}}</span>
   </div>
    <div class="row items-center">
    <span class="text-weight-medium col-5">Senha:</span>
-   <span class="col-auto"><q-input v-model="data.Senha" readonly dense borderless :type="isPWD?'text':'password'" />
+   <span class="col-auto"><q-input v-model="data.password" readonly dense borderless :type="isPWD?'text':'password'" />
    </span>
    <span class="col-auto"><q-btn color="primary" dense flat round :icon="isPWD?'visibility':'visibility_off'" @click="isPWD=!isPWD" /></span>
 
@@ -66,18 +66,7 @@
 
    <q-expansion-item  dense-toggle dense icon="manage_accounts" label="Permissões:">
    <q-card>
-   <q-card-section>
-    <div class="row items-center">
-    <span class="text-weight-medium col-5">Editar/Adicionar clientes</span>
-  <span class="col-auto">{{data.EditarCriar===1?'Sim':'Não'}}</span>
-</div>
-   </q-card-section>
-   <q-card-section>
-    <div class="row items-center">
-    <span class="text-weight-medium col-5">Excluir clientes</span>
-  <span class="col-auto">{{data.Excluir===1?'Sim':'Não'}}</span>
-</div>
-   </q-card-section>
+
    <q-card-section>
     <div class="row items-center">
     <span class="text-weight-medium col-5">Administrador</span>
@@ -100,11 +89,13 @@
 </template>
 
 <script>
+  import notify from "src/Mixins/notify";
   import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:3000/"
 });
 export default {
+  mixins:[notify],
   data () {
     return {
       data:[],
@@ -121,7 +112,7 @@ export default {
        this.data=res.data.data[0]
       })
       .catch((error) => {
-        alert(`${error}`);
+        this.errorNotify(`${error}`);
       });
     },
     goBack(){

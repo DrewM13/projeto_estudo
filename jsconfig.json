@@ -9,7 +9,7 @@
         "*"
       ],
       "components/*": [
-        "src/components/*"
+        "src/Mixins/*"
       ],
       "layouts/*": [
         "src/layouts/*"
