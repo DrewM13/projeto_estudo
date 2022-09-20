@@ -1,16 +1,15 @@
 <template>
 
   <div class="q-pa-sm bg-grey-3 window-height">
-{{data}}
 
     <q-table
       :data="data"
       :columns="columns"
-      row-key="idAdm"
-      selection="multiple"
-      :selected.sync="selected"
+      row-key="idUsers"
       :filter="filter"
-    >
+      >
+      <!-- selection="multiple"
+      :selected.sync="selected" -->
     <template v-slot:top-right>
        <div class="row q-gutter-x-sm">
         <span class="col">
@@ -30,7 +29,7 @@
       </template>
       <template v-slot:top-left>
 
-          <span class="text-h6 text-blue-grey-7"><q-icon name="fas fa-list" /> Lista de Usuários</span>
+          <span class="text-h6 text-blue-grey-7"><q-icon name="fas fa-list" /> Lista de Moradores</span>
 
 
 
@@ -101,16 +100,15 @@
 
 <script>
   import notify from "src/Mixins/notify";
-  import axios from "axios";
-const api = axios.create({
-  baseURL: "http://localhost:3000/"
-});
+import baseService from "src/http/baseService";
+
 export default {
   mixins:[notify],
   data () {
     return {
+      BaseService: new baseService(),
       filter:'',
-      selected:[],
+      // selected:[],
       columns: [
         {
           name: 'username',
@@ -135,22 +133,11 @@ export default {
   mounted(){
     this.getData()
   },
-  // watch:{
-  //   getData(){
-  //     this.getData()
-  //   }
-  // },
-
   methods:{
     getData(){
-     api.get("adm",{  headers: {
-      "Access-Control-Allow-Origin": "*",
-       'Content-Type': 'application/x-www-form-urlencoded',
-       'x-www-form-urlencoded':{token:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXJzIjozLCJlbWFpbCI6ImFAYS5jb20iLCJpYXQiOjE2NjM1MDA4MDMsImV4cCI6MTY2MzUwNDQwM30.RzThEwaJGsw5BCxVye6P3nffBqLD1LvaKmZWVd6B83g'
-  }}
-})
+
+   this.BaseService.getDataAdm()
      .then((res)=>{
-      console.log(res);
        this.data=res.data
       })
       .catch((error) => {
@@ -167,6 +154,7 @@ export default {
       this.$router.push({name:'addAdministrator'})
     },
     deleteRow(value){
+      console.log(value);
       this.$q
         .dialog({
           title: 'Atenção!',
@@ -191,7 +179,7 @@ export default {
           persistent: true
         })
         .onOk(() => {
-          api.delete(`adm/${value.idUsers}`)
+          this.BaseService.deleteUser(value.idUsers)
       .then((res)=>{
         this.successNotify(`Morador ${value.username} deletado com sucesso`)
         this.getData()

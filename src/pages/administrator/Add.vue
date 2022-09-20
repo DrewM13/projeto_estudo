@@ -4,7 +4,7 @@
     <q-card class="q-pa-none bg-grey-2 window-height">
 
       <q-card-section class="q-pt-sm q-pb-none q-px-md row">
-        <span class="text-h6 text-blue-grey-9 col">{{this.$route.params.id ? 'Editar':'Adicionar'}} morador</span>
+        <span class="text-h6 text-blue-grey-9 col">{{this.$route.params.id ? 'Editar':'Adicionar'}} morador {{this.$route.params.id ?data.username:''}}</span>
         {{data}}
         <div class="text-blue-grey-9 col text-right">
           <div class="row q-gutter-x-sm">
@@ -99,15 +99,14 @@
 
 <script>
   import notify from "src/Mixins/notify";
-  import axios from "axios";
-const api = axios.create({
-  baseURL: "http://localhost:3000/"
-});
+  import baseService from "src/http/baseService";
+
 export default {
   mixins:[notify],
   data () {
     return {
-      data:{  "username": "", "password": "", "Adm": null, "email": "" }
+      BaseService: new baseService(),
+      data:{  "username": "", "password": "", "Adm": 0, "email": "" }
 ,
     }
   },
@@ -115,12 +114,23 @@ export default {
     if (this.$route.params.id) {
       this.getData()
     }
+    else{
+       if (this.data.Adm===0) {
+        this.data.Adm=false
+       }
+    }
   },
   methods:{
     getData(){
-     api.get(`adm/${this.$route.params.id}`)
+      this.BaseService.getUserById(this.$route.params.id)
      .then((res)=>{
        this.data=res.data.data[0]
+       if (this.data.Adm===1) {
+        this.data.Adm=true
+       }
+       else if (this.data.Adm===0) {
+        this.data.Adm=false
+       }
       })
       .catch((error) => {
         this.errorNotify(`${error}`);
@@ -136,9 +146,10 @@ export default {
 
     },
     sendData(){
-      api.post('adm/AddUser/',this.data)
+      this.BaseService.addUser(this.data)
       .then((res)=>{
-        this.successNotify('Morador criado com sucesso!');
+        const name=res.data.usuarioCriado.data.username
+        this.successNotify(`Morador ${name} criado com sucesso!`);
         this.$router.push({name:'administrator'})
       })
       .catch((error) => {
@@ -146,9 +157,10 @@ export default {
       });
     },
      editData(){
-      api.patch(`adm/${this.$route.params.id}/`,this.data)
+      this.BaseService.editUser(this.data)
       .then((res)=>{
-        this.successNotify('Morador editado com sucesso!');
+        const name=res.data.data.username
+        this.successNotify(`Morador ${name} editado com sucesso!`);
         this.$router.push({name:'administrator'})
       })
       .catch((error) => {

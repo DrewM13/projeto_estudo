@@ -4,7 +4,7 @@
     <q-card class="q-pa-none bg-grey-2 window-height">
 
       <q-card-section class="q-pt-sm q-pb-none q-px-sm row">
-        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do morador: {{data.morador}}</span>
+        <span class="text-h6 text-blue-grey-9 col">Visualizando dados do morador: {{data.username}}</span>
         <div class="text-blue-grey-9 col text-right">
           <div class="row q-gutter-x-sm">
             <div class="col">
@@ -49,15 +49,11 @@
    <q-item >
    <q-item-section>
     <div class="row items-center">
+   <span class="text-weight-medium col-5">Nome do morador:</span>
+   <span class="col-auto">{{data.username}}</span>
+  </div> <div class="row items-center">
    <span class="text-weight-medium col-5">Email:</span>
    <span class="col-auto">{{data.email}}</span>
-  </div>
-   <div class="row items-center">
-   <span class="text-weight-medium col-5">Senha:</span>
-   <span class="col-auto"><q-input v-model="data.password" readonly dense borderless :type="isPWD?'text':'password'" />
-   </span>
-   <span class="col-auto"><q-btn color="primary" dense flat round :icon="isPWD?'visibility':'visibility_off'" @click="isPWD=!isPWD" /></span>
-
   </div>
    </q-item-section>
    </q-item>
@@ -90,16 +86,13 @@
 
 <script>
   import notify from "src/Mixins/notify";
-  import axios from "axios";
-const api = axios.create({
-  baseURL: "http://localhost:3000/"
-});
+import baseService from 'src/http/baseService';
 export default {
   mixins:[notify],
   data () {
     return {
       data:[],
-      isPWD:false
+      BaseService: new baseService()
     }
   },
   mounted(){
@@ -107,7 +100,7 @@ export default {
   },
   methods:{
     getData(){
-     api.get(`adm/${this.$route.params.id}`)
+      this.BaseService.getUserById(this.$route.params.id)
      .then((res)=>{
        this.data=res.data.data[0]
       })

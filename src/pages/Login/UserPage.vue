@@ -56,56 +56,38 @@
   </q-page>
 </template>
 <script>
-import axios from "axios";
+import baseService from 'src/http/baseService'
 import notify from "src/Mixins/notify";
-const api = axios.create({
-  baseURL: "http://localhost:3000/"
-});
+
 export default {
   mixins:[notify],
   name: "credentials",
   data() {
     return {
-      ConfirmPassWord: "",
+      BaseService: new baseService(),
       isPwd: true,
       isPwd2: true,
       userData: { email: "", password: "" },
-      auth: null
     };
   },
-  created(){this.checkCredentials()},
+  mounted(){this.checkCredentials()},
   methods: {
-    datalogin(value) {
-      api.interceptors.request.use(
-        (config) => {
-          if (this.userData !== null) {
-            config.headers.Authorization =  `Bearer ${value.data.token}`;
-            localStorage.setItem('token',value.data.token)
-
-          }
-          return config;
-        },
-        (error) => {
-          return Promise.reject(error);
-        }
-      );
-    },
     Login() {
       this.$refs.myFormLogin.validate().then((success) => {
-        api
-        .post("credentials/", this.userData)
+        if(success)
+        this.BaseService.Login(this.userData)
         .then((res) => {
-            this.datalogin(res)
-            this.$router.push({ name: "administrator" });
+          localStorage.setItem('token',res.token)
+            this.$router.push({ name: "DashBoard" });
           })
           .catch((error) => {
-            this.errorNotify(error.response.data.mensagem);
+            this.errorNotify('Falha de autenticação');
           });
       });
     },
     checkCredentials(){
       if(localStorage.token){
-        // this.$router.push({name:'DashBoard'})
+        this.$router.push({name:'DashBoard'})
       }
     }
   }
