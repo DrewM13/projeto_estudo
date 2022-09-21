@@ -11,6 +11,14 @@ const routes = [
          path: '',
          name:'credentials',
           component: () => import('src/pages/Login/UserPage.vue') }]
+    },
+     {
+      path:'/facialRecognition',
+      component: () => import('src/pages/FacialRecognition/Index.vue'),
+      children:[{
+         path: '',
+         name:'FacialRecognition',
+          component: () => import('src/pages/FacialRecognition/FacialRecognition.vue') }]
     }
 ]
   },
